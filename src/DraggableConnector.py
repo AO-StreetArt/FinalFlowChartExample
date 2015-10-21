@@ -16,8 +16,10 @@ and snaps a connector between the nodes (at global level)
 @author: abarry
 """
 from kivy.clock import Clock
-from kivy.properties import ObjectProperty
-from magnet import Magnet
+from kivy.properties import ObjectProperty, NumericProperty
+from Magnet import Magnet
+from kivy.uix.button import Button
+from kivy.logger import Logger
 
 class SimpleConnectorButton(Button):
     #The Grid being worked on

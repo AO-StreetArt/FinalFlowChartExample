@@ -9,7 +9,8 @@ A Connector and Receiver can be added/removed to it's node and move as it's move
 """
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
-from magnet import Magnet
+from Magnet import Magnet
+from kivy.logger import Logger
 
 class DraggableLabel(Magnet):
     

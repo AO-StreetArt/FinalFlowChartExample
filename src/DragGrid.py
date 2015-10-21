@@ -8,6 +8,7 @@ Created on Tue Oct 20 15:41:35 2015
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, ListProperty, NumericProperty, ReferenceListProperty
+from kivy.logger import Logger
 
 #A Cell in the DragGrid
 class DragGridCell(BoxLayout):
@@ -50,6 +51,8 @@ class DragGrid(GridLayout):
                 cell=DragGridCell(grid=self, pos=[i,j], orientation='vertical')
                 self.cells.append(cell)
                 self.add_widget(cell)
+                
+        Logger.debug('Flowchart: DragGrid: Drag Grid Filled')
     
     #Return the cell with the given row (x) and column (y)
     def get_cell(self, x, y):
@@ -72,7 +75,7 @@ class DragGrid(GridLayout):
         min_distance=99999
         min_pos=[(0,0)]
         for cell in self.cells:
-            if cell.isEmpty():
+            if cell.is_empty():
                 ordered_cells.append(cell)
                 for o_cell in ordered_cells:
                     distances.append((((o_cell.row - origin_row) ** 2) + ((o_cell.col - origin_col) ** 2)) ** 0.5)

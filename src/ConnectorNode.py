@@ -8,6 +8,10 @@ Created on Tue Oct 20 21:22:50 2015
 from DraggableConnector import DraggableConnector, SimpleConnectorButton
 from Connector import Connector
 from kivy.properties import ObjectProperty, ListProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.image import Image
+from kivy.clock import Clock
+from kivy.logger import Logger
 
 class ConnectorNode(BoxLayout):
     
@@ -18,15 +22,15 @@ class ConnectorNode(BoxLayout):
     grid = ObjectProperty(None)
     
     #The cell the button occupies
-    cell = ObjectProperty(None)
-    
-    #Property exposed to set the list of connected nodes
-    connected_nodes = ListProperty([])    
+    cell = ObjectProperty(None) 
 
     #The color of the connection lines in rgb
     connector_color = ListProperty([1, 1, 1])
     
     #Internal Properties
+    #Property to set the list of connected nodes
+    connected_nodes = ListProperty([])   
+    
     #The Center Widget
     center_node = ObjectProperty(None)
     
@@ -36,7 +40,11 @@ class ConnectorNode(BoxLayout):
     def __init__(self, **kwargs):
         super(ConnectorNode, self).__init__(**kwargs)
         #create the center button & bind the properties
+        Clock.schedule_once(self.build_center)
+        
+    def build_center(self, *args):
         c_node = SimpleConnectorButton(grid=self.grid, cell=self.cell, node=self)
+        Logger.debug('Flowchart: ConnectorNode: Connector Node initialized with grid %s, cell %s, and node %s' % (self.grid, self.cell, self))
         c_node.bind(pos=self.set_front, on_press=self.press_front)
         self.center_node = c_node
         self.add_widget(self.center_node)
@@ -59,12 +67,14 @@ class ConnectorNode(BoxLayout):
                 connector = MenuConnector(line_color=self.connector_color)
                 self.connect.append(connector)
                 
+            Logger.debug('Flowchart: ConnectorNode: Connections Created')
         #Add a new connector and a new draggable image lists
         connector = Connector(line_color=self.connector_color)
         self.connect.append(connector)
         
         image = Image(source='drag_node_small.png')
         drag = DraggableConnector(img=image, app=self.app, grid=self.grid, cell=self.grid.get_next_cell(self.cell.row, self.cell.col))
+        Logger.debug('Flowchart: ConnectorNode: Draggable Connector initialized with app %s, grid %s, cell %s, and node %s' % (self.app, self.grid, self.cell, self))
         self.connected_nodes.append(drag)
         
         self.clear_widgets()

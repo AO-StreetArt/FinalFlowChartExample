@@ -10,6 +10,7 @@ Can be dropped into the node editor
 from Magnet import Magnet
 from kivy.properties import ObjectProperty
 from kivy.clock import Clock
+from kivy.logger import Logger
 
 #This class defines a draggable object which will be
 #added to the layout it's dropped on.  This allows for
@@ -97,7 +98,7 @@ class DraggableImage(Magnet):
             if self.node_editor.collide_point(*touch.pos):
                 for cell in self.node_editor.cells:
                     if cell.collide_point(*touch.pos):
-                        #TO-DO: This needs to trigger an event in the root widget which we can bind to
+                        self.app.add_flowchart_node(cell, self.img)
                         if self.parent == self.grid_layout:
                             self.grid_layout.remove_widget(self)
                         elif self.parent == self.float_layout:
