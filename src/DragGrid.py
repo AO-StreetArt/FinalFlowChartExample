@@ -25,7 +25,7 @@ class DragGridCell(BoxLayout):
     pos=ReferenceListProperty(row, col)
         
     #Is the cell empty
-    def isEmpty(self):
+    def is_empty(self):
         if len(self.children == 0):
             return True
         else:
@@ -47,25 +47,25 @@ class DragGrid(GridLayout):
         self.cols=self.size
         for i in range(0, self.size):
             for j in range(0, self.size):
-                cell=DragGridCell(grid=self, pos=[i,j])
+                cell=DragGridCell(grid=self, pos=[i,j], orientation='vertical')
                 self.cells.append(cell)
                 self.add_widget(cell)
     
     #Return the cell with the given row (x) and column (y)
-    def getCell(self, x, y):
+    def get_cell(self, x, y):
         for cell in self.cells:
             if cell.row == x and cell.col == y:
                 return cell
         return 0
         
     #Clear all the widgets from every cell in the 
-    def clearCells(self):
+    def clear_cells(self):
         for cell in self.cells:
             cell.clear_widgets()
             
     #Get the next cell, based on the origin.
     #The method looks for the closest empty cell in the grid to the origin position
-    def getNextCell(self, origin_row, origin_col):
+    def get_next_cell(self, origin_row, origin_col):
         ordered_cells=[]
         distances=[]
         positions=[]

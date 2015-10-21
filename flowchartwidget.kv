@@ -1,0 +1,21 @@
+#: kivy 1.9.0
+
+<FlowchartExampleWidget>
+	drag_grid: drag_grid
+	BoxLayout:
+		orientation: 'horizontal'
+		BoxLayout:
+			orientation: 'vertical'
+			size_hint: 0.2, 1
+			id: box_layout
+			FloatLayout:
+				BoxLayout:
+				GridLayout:
+					id: drag_grid
+					rows: int(self.height / 20)
+				FloatLayout:
+					id: float_layout
+		DragGrid:
+			size_hint: 0.8, 1
+			size: 8
+			id: node_editor

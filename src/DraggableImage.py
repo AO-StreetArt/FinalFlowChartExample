@@ -50,7 +50,7 @@ class DraggableImage(Magnet):
             if self.is_draggable:
                 touch.grab(self)
                 self.remove_widget(self.img)
-                self.app.root.get_screen('workflow').add_widget(self.img)
+                self.app.root.add_widget(self.img)
                 self.center = touch.pos
                 self.img.center = touch.pos
             else:
@@ -93,17 +93,15 @@ class DraggableImage(Magnet):
 
     def on_touch_up(self, touch, *args):
         if touch.grab_current == self:
-            self.app.root.get_screen('workflow').remove_widget(self.img)
+            self.app.root.add_widget(self.img)
             if self.node_editor.collide_point(*touch.pos):
                 for cell in self.node_editor.cells:
                     if cell.collide_point(*touch.pos):
+                        #TO-DO: This needs to trigger an event in the root widget which we can bind to
                         if self.parent == self.grid_layout:
                             self.grid_layout.remove_widget(self)
-                            self.node_editor.add_widget(self)
                         elif self.parent == self.float_layout:
                             self.float_layout.remove_widget(self)
-                            self.node_editor.add_widget(self)
-            self.add_widget(self.img)
             touch.ungrab(self)
             return True
 
