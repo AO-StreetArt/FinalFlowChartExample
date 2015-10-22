@@ -23,6 +23,9 @@ class ConnectorNode(BoxLayout):
     
     #The cell the button occupies
     cell = ObjectProperty(None) 
+    
+    #The flow chart node the connector node is in
+    node = ObjectProperty(None)
 
     #The color of the connection lines in rgb
     connector_color = ListProperty([1, 1, 1])
@@ -73,7 +76,7 @@ class ConnectorNode(BoxLayout):
         self.connect.append(connector)
         
         image = Image(source='drag_node_small.png')
-        drag = DraggableConnector(img=image, app=self.app, grid=self.grid, cell=self.grid.get_next_cell(self.cell.row, self.cell.col))
+        drag = DraggableConnector(img=image, app=self.app, grid=self.grid, cell=self.grid.get_next_cell(self.cell.row, self.cell.col), node=self.node)
         Logger.debug('Flowchart: ConnectorNode: Draggable Connector initialized with app %s, grid %s, cell %s, and node %s' % (self.app, self.grid, self.cell, self))
         self.connected_nodes.append(drag)
         

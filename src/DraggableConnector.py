@@ -66,24 +66,30 @@ class DraggableConnector(Magnet):
         self.img.center = touch.pos
         return True
 
-        return super(DraggableLabel, self).on_touch_down(touch, *args)
+        return super(DraggableConnector, self).on_touch_down(touch, *args)
 
     def on_touch_move(self, touch, *args):
 
         if touch.grab_current == self:
             self.img.center = touch.pos
-        return super(DraggableLabel, self).on_touch_move(touch, *args)
+        return super(DraggableConnector, self).on_touch_move(touch, *args)
 
     def on_touch_up(self, touch, *args):
         if touch.grab_current == self:
+            #Clear the node widgets
+            self.node.clear_all_widgets()
+            #Add the node back with no connector
+            self.node.build_widget_no_connector()
+            Logger.debug('Widget removed from node (%s, %s)' % (self.cell.row, self.cell.col))
             if self.grid.collide_point(*touch.pos):
                 for cel in self.grid.cells:
                     if cel.collide_point(*touch.pos):
                         if cel.is_empty():
-                            self.cell.remove_widget(self.node)
                             self.app.root.remove_widget(self.img)
+                            self.parent.clear_widgets()
                             self.cell=cel
-                            self.cell.add_widget(self.node)
+                            Logger.debug('Widget cell updated to (%s, %s)' % (self.cell.row, self.cell.col))
+                            self.node.add_widget(self)
                             self.add_widget(self.img)
                             touch.ungrab(self)
                             return True
@@ -92,14 +98,13 @@ class DraggableConnector(Magnet):
                             self.app.update_connectors(self.node, self)
                             
                 self.app.root.remove_widget(self.img)
-                self.cell=1
                 self.add_widget(self.img)
                 touch.ungrab(self)
                 return True
-            else:
-                self.cell.remove_widget(self.node)
-                self.app.root.remove_widget(self.img)
-                self.cell.add_widget(self.node)
-                self.add_widget(self.img)
-                touch.ungrab(self)
-        return super(DraggableLabel, self).on_touch_up(touch, *args)
+#            else:
+#                self.app.root.remove_widget(self.img)
+#                self.node.add_widget(self)
+#                self.node.add_widget(self.node.buf)
+#                self.add_widget(self.img)
+#                touch.ungrab(self)
+        return super(DraggableConnector, self).on_touch_up(touch, *args)

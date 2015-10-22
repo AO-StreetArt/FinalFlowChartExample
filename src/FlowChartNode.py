@@ -40,11 +40,13 @@ class FlowChartNode(BoxLayout):
     #A list of forward connections to other nodes
     connections = ListProperty([])
     
+    buf = ObjectProperty(None)
+    
     def __init__(self, **kwargs):
         
         super(FlowChartNode, self).__init__(**kwargs)
         
-        con = ConnectorNode(app=self.app, grid=self.grid, cell=self.cell)
+        con = ConnectorNode(app=self.app, grid=self.grid, cell=self.cell, node=self)
         Logger.debug('Flowchart: ConnectorNode: Connector Node initialized with app %s, grid %s, and cell %s' % (self.app, self.grid, self.cell))
         rec = Image(source='src/img/drag_node_small.png')
         self.connector = con
@@ -53,20 +55,68 @@ class FlowChartNode(BoxLayout):
         Clock.schedule_once(self.build_widget)
         
     def build_widget(self, *args):
-        buf1 = BoxLayout(size_hint=[0.25, 0.3])
-        buf2 = BoxLayout(size_hint=[0.25, 0.3])
-        buf3 = BoxLayout(size_hint=[0.25, 0.3])
-        buf4 = BoxLayout(size_hint=[0.25, 0.3])
+        row1 = BoxLayout(size_hint=[1, 0.3])
+        row2 = BoxLayout(size_hint=[1, 0.4])
+        row3 = BoxLayout(size_hint=[1, 0.3])
+        buf1 = BoxLayout(size_hint=[0.25, 1])
+        buf2 = BoxLayout(size_hint=[0.25, 1])
+        buf3 = BoxLayout(size_hint=[0.25, 1])
+        buf4 = BoxLayout(size_hint=[0.25, 1])
+        self.buf=buf4
         
-        self.connector.size_hint=[0.5, 0.3]
-        self.receiver.size_hint=[0.5, 0.3]
-        self.label.size_hint=[1, 0.4]
+        self.connector.size_hint=[0.5, 1]
+        self.receiver.size_hint=[0.5, 1]
+        self.label.size_hint=[1, 1]
         
         self.orientation='vertical'
-        self.add_widget(buf1)
-        self.add_widget(self.receiver)
-        self.add_widget(buf2)
-        self.add_widget(self.label)
-        self.add_widget(buf3)
-        self.add_widget(self.connector)
-        self.add_widget(buf4)
+        row1.orientation='horizontal'
+        row2.orientation='horizontal'
+        row3.orientation='horizontal'
+        
+        row1.add_widget(buf1)
+        row1.add_widget(self.receiver)
+        row1.add_widget(buf2)
+        row2.add_widget(self.label)
+        row3.add_widget(buf3)
+        row3.add_widget(self.connector)
+        row3.add_widget(buf4)
+        
+        self.add_widget(row1)
+        self.add_widget(row2)
+        self.add_widget(row3)
+        
+    def build_widget_no_connector(self, *args):
+        row1 = BoxLayout(size_hint=[1, 0.3])
+        row2 = BoxLayout(size_hint=[1, 0.4])
+        row3 = BoxLayout(size_hint=[1, 0.3])
+        buf1 = BoxLayout(size_hint=[0.25, 1])
+        buf2 = BoxLayout(size_hint=[0.25, 1])
+        buf3 = BoxLayout(size_hint=[0.25, 1])
+        buf4 = BoxLayout(size_hint=[0.25, 1])
+        self.buf=buf4
+        
+        self.connector.size_hint=[0.5, 1]
+        self.receiver.size_hint=[0.5, 1]
+        self.label.size_hint=[1, 1]
+        
+        self.orientation='vertical'
+        row1.orientation='horizontal'
+        row2.orientation='horizontal'
+        row3.orientation='horizontal'
+        
+        row1.add_widget(buf1)
+        row1.add_widget(self.receiver)
+        row1.add_widget(buf2)
+        row2.add_widget(self.label)
+        row3.add_widget(buf3)
+        
+        self.add_widget(row1)
+        self.add_widget(row2)
+        self.add_widget(row3)
+        
+    def clear_all_widgets(self, *args):
+        self.clear_widgets()
+        self.connector.parent.clear_widgets()
+        self.receiver.parent.clear_widgets()
+        self.label.parent.clear_widgets()
+        

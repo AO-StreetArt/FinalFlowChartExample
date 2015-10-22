@@ -56,10 +56,12 @@ class DraggableLabel(Magnet):
             if self.grid.collide_point(*touch.pos):
                 for cel in self.grid.cells:
                     if cel.collide_point(*touch.pos):
-                        self.cell.remove_widget(self.node)
+                        self.node.parent.clear_widgets()
+                        self.cell.nodes.remove(self.node)
                         self.app.root.remove_widget(self.img)
                         self.cell=cel
                         self.cell.add_widget(self.node)
+                        self.cell.nodes.append(self.node)
                         self.add_widget(self.img)
                         touch.ungrab(self)
                         return True
@@ -69,7 +71,7 @@ class DraggableLabel(Magnet):
                 touch.ungrab(self)
                 return True
             else:
-                self.cell.remove_widget(self.node)
+                self.node.parent.clear_widgets()
                 self.app.root.remove_widget(self.img)
                 self.cell.add_widget(self.node)
                 self.add_widget(self.img)

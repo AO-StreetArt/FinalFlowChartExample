@@ -24,10 +24,13 @@ class DragGridCell(BoxLayout):
     
     #The position of the cell (row, column)
     pos=ReferenceListProperty(row, col)
+    
+    #List of flow chart nodes currently occupying this cell
+    nodes=ListProperty([])
         
     #Is the cell empty
     def is_empty(self):
-        if len(self.children == 0):
+        if len(self.nodes) == 0:
             return True
         else:
             return False
@@ -79,7 +82,7 @@ class DragGrid(GridLayout):
                 ordered_cells.append(cell)
                 for o_cell in ordered_cells:
                     distances.append((((o_cell.row - origin_row) ** 2) + ((o_cell.col - origin_col) ** 2)) ** 0.5)
-                    positions.append(o_cell.row, o_cell.col)
+                    positions.append(o_cell.pos)
         
         i=0
         for dist in distances:
@@ -88,5 +91,5 @@ class DragGrid(GridLayout):
                 min_pos = positions[i]
             i+=1
             
-        return self.getCell(min_pos[0], min_pos[1])
+        return self.get_cell(min_pos[0], min_pos[1])
         

@@ -30,6 +30,7 @@ class FlowchartExampleApp(App):
         lbl = Label(text='Test')
         drag = FlowChartNode(app=self, grid=root.drag_grid, cell=root.drag_grid.cells[0], label=lbl)
         root.drag_grid.cells[0].add_widget(drag)
+        root.drag_grid.cells[0].nodes.append(drag)
         return root
         
     def update_connectors(self, node, connector):
