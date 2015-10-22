@@ -12,7 +12,7 @@ The DragGrid Class defines a Grid Layout with a pre-defined number of rows and c
 The DragGrid is very easy to animate and create the 'snap to grid' functionality.  Effectively, each Cell can be used as a target for catching callbacks.
 
 - Easy to Reference Cells
-The Grid offers some convinience classes to return cells from it.  Currently, this includes:
+The Grid offers some convinience methods to return cells from it.  Currently, this includes:
   - get_cell(row, column)
   - clear_cells()
   - get_next_cell(origin_row, origin_column)
