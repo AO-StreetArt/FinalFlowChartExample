@@ -19,12 +19,12 @@ The Grid offers some convinience methods to return cells from it.  Currently, th
 
 - Simple to Add/Remove Widgets
 The grid lets us use lines like:
-'''python
+```python
 button = Button(text='Button')
 root.grid.get_cell(0, 0).add_widget(my_button)
 
 root.grid.get_cell(0, 0).clear_widgets()
-'''
+```
 
 ##Draggables
 We have a draggable to move from the draggable list to the flowchart editor, another to be the label in the flowchart editor, and one last to be the connector in the flowchart editor.  These are still under construction.
