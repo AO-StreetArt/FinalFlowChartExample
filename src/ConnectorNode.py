@@ -75,7 +75,7 @@ class ConnectorNode(BoxLayout):
         connector = Connector(line_color=self.connector_color)
         self.connect.append(connector)
         
-        image = Image(source='drag_node_small.png')
+        image = Image(source='src/img/drag_node_small.png')
         drag = DraggableConnector(img=image, app=self.app, grid=self.grid, cell=self.grid.get_next_cell(self.cell.row, self.cell.col), node=self.node)
         Logger.debug('Flowchart: ConnectorNode: Draggable Connector initialized with app %s, grid %s, cell %s, and node %s' % (self.app, self.grid, self.cell, self))
         self.connected_nodes.append(drag)

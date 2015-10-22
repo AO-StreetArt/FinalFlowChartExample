@@ -9,7 +9,6 @@ Flow Chart Node
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from DraggableLabel import DraggableLabel
 from ConnectorNode import ConnectorNode
 from kivy.properties import ObjectProperty, ListProperty
 from kivy.clock import Clock

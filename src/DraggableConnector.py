@@ -77,7 +77,11 @@ class DraggableConnector(Magnet):
     def on_touch_up(self, touch, *args):
         if touch.grab_current == self:
             #Remove the connector
-            self.node.connector.remove_widget(self)
+            for cel in self.grid.cells:
+                if self.node.connector.parent == cel:
+                    self.node.connector.parent.remove_widget(self)
+                else:
+                    self.node.connector.remove_widget(self)
             Logger.debug('Widget removed from node (%s, %s)' % (self.cell.row, self.cell.col))
             if self.grid.collide_point(*touch.pos):
                 for cel in self.grid.cells:
