@@ -37,7 +37,7 @@ class DraggableLabel(Magnet):
 
     def on_touch_down(self, touch, *args):
         touch.grab(self)
-        self.remove_widget(self.img)
+        self.clear_widgets()
         self.app.root.add_widget(self.img)
         self.center = touch.pos
         self.img.center = touch.pos
