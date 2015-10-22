@@ -20,7 +20,7 @@ The Grid offers some convinience methods to return cells from it.  Currently, th
 - Simple to Add/Remove Widgets
 The grid lets us use lines like:
 ```python
-button = Button(text='Button')
+my_button = Button(text='Button')
 root.grid.get_cell(0, 0).add_widget(my_button)
 
 root.grid.get_cell(0, 0).clear_widgets()
