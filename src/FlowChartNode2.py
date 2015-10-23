@@ -191,13 +191,13 @@ class FlowChartNode(BoxLayout):
         self.row1=row1
         self.row2=row2
         self.row3=row3
-        buf1 = BoxLayout(size_hint=[0.25, 1])
-        buf2 = BoxLayout(size_hint=[0.25, 1])
-        buf3 = BoxLayout(size_hint=[0.25, 1])
-        buf4 = BoxLayout(size_hint=[0.25, 1])
+        buf1 = BoxLayout(size_hint=[0.35, 1])
+        buf2 = BoxLayout(size_hint=[0.35, 1])
+        buf3 = BoxLayout(size_hint=[0.35, 1])
+        buf4 = BoxLayout(size_hint=[0.35, 1])
         
-        self.connector.size_hint=[0.5, 1]
-        self.receiver.size_hint=[0.5, 1]
+        self.connector.size_hint=[0.3, 1]
+        self.receiver.size_hint=[0.3, 1]
         self.label.size_hint=[1, 1]
         
         self.orientation='vertical'

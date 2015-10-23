@@ -34,6 +34,8 @@ class Connector(Widget):
         with self.canvas:
             Color(self.line_color[0], self.line_color[1], self.line_color[2])
             Line(points=[self.front[0], self.front[1], self.back[0], self.back[1]])
+            Line(points=[self.back[0], self.back[1], self.back[0] + ((self.front[0] - self.back[0]) / 6), self.back[1] + ((self.front[1] - self.back[1]) / 10)])
+            Line(points=[self.back[0], self.back[1], self.back[0] + ((self.front[0] - self.back[0]) / 10), self.back[1] + ((self.front[1] - self.back[1]) / 6)])
             Logger.debug('Flowchart: Connector: Connector updated with front = %s and back = %s' % (self.front, self.back))
     
     def set_back(self, *args):
@@ -41,6 +43,8 @@ class Connector(Widget):
         with self.canvas:
             Color(self.line_color[0], self.line_color[1], self.line_color[2])
             Line(points=[self.front[0], self.front[1], self.back[0], self.back[1]])
+            Line(points=[self.back[0], self.back[1], self.back[0] + ((self.front[0] - self.back[0]) / 6), self.back[1] + ((self.front[1] - self.back[1]) / 10)])
+            Line(points=[self.back[0], self.back[1], self.back[0] + ((self.front[0] - self.back[0]) / 10), self.back[1] + ((self.front[1] - self.back[1]) / 6)])
             Logger.debug('Flowchart: Connector: Connector initialized with front = %s and back = %s' % (self.front, self.back))
     
     def set_color(self, *args):
@@ -48,4 +52,6 @@ class Connector(Widget):
         with self.canvas:
             Color(self.line_color[0], self.line_color[1], self.line_color[2])
             Line(points=[self.front[0], self.front[1], self.back[0], self.back[1]])
+            Line(points=[self.back[0], self.back[1], self.back[0] + ((self.front[0] - self.back[0]) / 6), self.back[1] + ((self.front[1] - self.back[1]) / 10)])
+            Line(points=[self.back[0], self.back[1], self.back[0] + ((self.front[0] - self.back[0]) / 10), self.back[1] + ((self.front[1] - self.back[1]) / 6)])
             Logger.debug('Flowchart: Connector: Connector color updated with color = %s, %s, %s' % (self.line_color[0], self.line_color[1], self.line_color[2]))
