@@ -47,6 +47,10 @@ class DragGrid(GridLayout):
     #The size (length and width) of the drag grid
     size=NumericProperty(3)
     
+    #A list of connections
+    #The first row is the front node, the next row is the back node
+    connections=ListProperty([])
+    
     #Called when initialized to add the cells to the grid
     def __init__(self, **kwargs):
 
@@ -58,6 +62,8 @@ class DragGrid(GridLayout):
                 self.cells.append(cell)
                 self.add_widget(cell)
                 
+        self.connections.append([])
+        self.connections.append([])
         Logger.debug('Flowchart: DragGrid: Drag Grid Filled')
     
     #Return the cell with the given row (x) and column (y)

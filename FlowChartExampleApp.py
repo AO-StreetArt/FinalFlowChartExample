@@ -46,16 +46,6 @@ class FlowchartExampleApp(App):
         root.drag_grid.nodes.append(drag2)
         
         return root
-        
-    def update_connectors(self, node, connector):
-        #node: the flow chart node being updated
-        #connector: the connector being updated
-        pass
-    
-    def add_flowchart_node(self, cell, label):
-        #cell: the cell to add the flowchart node to
-        #label: the label to use for the flowchart node
-        pass
     
     def create_connections(self, *args):
         pass

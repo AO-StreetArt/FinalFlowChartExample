@@ -21,6 +21,7 @@ class DraggableImage(Magnet):
     app = ObjectProperty(None)
     grid = ObjectProperty(None)
     cell = ObjectProperty(None)
+    node=ObjectProperty(None)
     
     double_press=ListProperty([0,0])
     is_set=BooleanProperty(False)
@@ -80,6 +81,7 @@ class DraggableImage(Magnet):
                 self.cell.add_widget(self.node)
                 self.add_widget(self.img)
                 touch.ungrab(self)
+        self.node.update_connections()
         return super(DraggableImage, self).on_touch_up(touch, *args)
 
 class ConnectorForward(ToggleButton):
@@ -116,10 +118,15 @@ class ConnectorForward(ToggleButton):
                     self.connections.append(connector)
                     self.node.connections.append(node)
                     self.matching_connection=node
+                    
+                    #TO-DO: Validate for duplicates
+                    self.grid.connections[0].append(self.node)
+                    self.grid.connections[1].append(node)
                     Logger.debug('FlowChart: Matching Connector appended')
                     
             #Add the connections to the widget
             for connect in self.connections:
+                self.clear_widgets()
                 self.add_widget(connect)
                 connect.front=self.center
                 connect.back=self.matching_connection.receiver.center
@@ -127,13 +134,14 @@ class ConnectorForward(ToggleButton):
     
 class ConnectorBack(ToggleButton):
     app=ObjectProperty(None)
+    node=ObjectProperty(None)
     def __init__(self, **kwargs):
         
         super(ConnectorBack, self).__init__(**kwargs)
         self.background_down='src/img/drag_node_down_small.png'
         self.background_normal='src/img/drag_node_small.png'
         self.group='back'
-        self.bind(on_press=self.app.create_connections)
+        self.bind(on_press=self.node.update_connections)
 
 class FlowChartNode(BoxLayout):
     
@@ -170,7 +178,7 @@ class FlowChartNode(BoxLayout):
         
         con = ConnectorForward(grid=self.grid, node=self)
         Logger.debug('Flowchart: ConnectorNode: Connector Node initialized with grid %s' % (self.grid))
-        rec = ConnectorBack(app=self.app)
+        rec = ConnectorBack(app=self.app, node=self)
         self.connector = con
         self.receiver = rec
 
@@ -212,3 +220,13 @@ class FlowChartNode(BoxLayout):
     def clear_all_widgets(self, *args):
         self.clear_widgets()
         self.connector.clear_widgets()
+        
+    def update_connections(self, *args):
+        i=0
+        self.connector.clear_widgets()
+        for con in self.connections:
+            self.connector.add_widget(self.connector.connections[i])
+            self.connector.connections[i].front=self.connector.center
+            self.connector.connections[i].back=con.receiver.center
+            Logger.debug('FlowChart: Connections Updated')
+            i+=1
