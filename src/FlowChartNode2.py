@@ -88,6 +88,7 @@ class ConnectorForward(ToggleButton):
     connections=ListProperty([])
     node=ObjectProperty(None)
     matching_connection=ObjectProperty(None)
+    connector_color=ListProperty([1, 1, 1])
     
     def __init__(self, **kwargs):
         
@@ -103,6 +104,7 @@ class ConnectorForward(ToggleButton):
         for node in self.grid.nodes:
             if node.receiver.state=='down':
                 keep_going=True
+                Logger.debug('FlowChart: Active Receiver Detected')
         
         if keep_going:
                 
@@ -114,12 +116,14 @@ class ConnectorForward(ToggleButton):
                     self.connections.append(connector)
                     self.node.connections.append(node)
                     self.matching_connection=node
+                    Logger.debug('FlowChart: Matching Connector appended')
                     
             #Add the connections to the widget
-            for connect in connections:
+            for connect in self.connections:
                 self.add_widget(connect)
                 connect.front=self.center
-                connect.back=matching_connection.receiver.center
+                connect.back=self.matching_connection.receiver.center
+                Logger.debug('FlowChart: Connections Updated')
     
 class ConnectorBack(ToggleButton):
     app=ObjectProperty(None)
@@ -128,7 +132,7 @@ class ConnectorBack(ToggleButton):
         super(ConnectorBack, self).__init__(**kwargs)
         self.background_down='src/img/drag_node_down_small.png'
         self.background_normal='src/img/drag_node_small.png'
-        self.group='front'
+        self.group='back'
         self.bind(on_press=self.app.create_connections)
 
 class FlowChartNode(BoxLayout):
@@ -164,7 +168,7 @@ class FlowChartNode(BoxLayout):
         
         super(FlowChartNode, self).__init__(**kwargs)
         
-        con = ConnectorForward(grid=self.grid)
+        con = ConnectorForward(grid=self.grid, node=self)
         Logger.debug('Flowchart: ConnectorNode: Connector Node initialized with grid %s' % (self.grid))
         rec = ConnectorBack(app=self.app)
         self.connector = con

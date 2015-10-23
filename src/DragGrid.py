@@ -9,9 +9,6 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, ListProperty, NumericProperty, ReferenceListProperty
 from kivy.logger import Logger
-from kivy.lang import Builder
-
-Builder.load_file('src/draggrid.kv')
 
 #A Cell in the DragGrid
 class DragGridCell(BoxLayout):
