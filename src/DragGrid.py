@@ -9,6 +9,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, ListProperty, NumericProperty, ReferenceListProperty
 from kivy.logger import Logger
+from kivy.lang import Builder
+
+Builder.load_file('src/draggrid.kv')
 
 #A Cell in the DragGrid
 class DragGridCell(BoxLayout):
@@ -41,6 +44,9 @@ class DragGrid(GridLayout):
     #A list of the cells in the drag grid
     cells=ListProperty([])
     
+    #A list of nodes currently occuppying the drag grid
+    nodes=ListProperty([])
+    
     #The size (length and width) of the drag grid
     size=NumericProperty(3)
     
@@ -51,7 +57,7 @@ class DragGrid(GridLayout):
         self.cols=self.size
         for i in range(0, self.size):
             for j in range(0, self.size):
-                cell=DragGridCell(grid=self, pos=[i,j], orientation='vertical')
+                cell=DragGridCell(grid=self, row=i, col=j, orientation='vertical')
                 self.cells.append(cell)
                 self.add_widget(cell)
                 

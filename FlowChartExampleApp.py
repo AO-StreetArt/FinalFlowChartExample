@@ -16,9 +16,8 @@ from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.clock import Clock
 
-from src.DragGrid import DragGrid
-from src.FlowChartNode import FlowChartNode
-from src.DraggableLabel import DraggableLabel
+from src.DragGrid import DragGrid, DragGridCell
+from src.FlowChartNode2 import FlowChartNode, DraggableImage
 
 Builder.load_file('flowchartwidget.kv')
 
@@ -29,8 +28,7 @@ class FlowchartExampleApp(App):
     def build(self):
         root = FlowchartExampleWidget()
         lbl = Label(text='Test')
-        drag_label = DraggableLabel(img=lbl, app=self, grid=root.drag_grid, cell=root.drag_grid.cells[0])
-        
+        drag_label = DraggableImage(img=lbl, app=self, grid=root.drag_grid, cell=root.drag_grid.cells[0])
         drag = FlowChartNode(app=self, grid=root.drag_grid, cell=root.drag_grid.cells[0], label=drag_label)
         drag_label.node = drag
         root.drag_grid.cells[0].add_widget(drag)
@@ -45,6 +43,9 @@ class FlowchartExampleApp(App):
     def add_flowchart_node(self, cell, label):
         #cell: the cell to add the flowchart node to
         #label: the label to use for the flowchart node
+        pass
+    
+    def create_connections(self, *args):
         pass
   
 if __name__ == '__main__':
