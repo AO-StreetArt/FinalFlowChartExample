@@ -17,16 +17,24 @@ from kivy.logger import Logger
 
 #This class defines a draggable image
 class DraggableImage(Magnet):
+    #The object to be dragged
     img = ObjectProperty(None, allownone=True)
+    
+    #The App Object
     app = ObjectProperty(None)
+    
+    #The Drag Grid
     grid = ObjectProperty(None)
+    
+    #The cell currently occupied
     cell = ObjectProperty(None)
+    
+    #The flowchart node it belongs to
     node=ObjectProperty(None)
     
+    #A Property to expose the on_double_press event
     double_press=ListProperty([0,0])
-    is_set=BooleanProperty(False)
-    has_button=BooleanProperty(False)
-
+    
     def on_img(self, *args):
         self.clear_widgets()
         if self.img:
@@ -36,16 +44,12 @@ class DraggableImage(Magnet):
         if self.collide_point(*touch.pos):
             if touch.is_double_tap:
                 self.double_press=touch.pos
-                if self.is_set:
-                    self.is_set=False
-                else:
-                    self.is_set=True
                 Logger.debug('Draggable double pressed at %s' % (self.double_press))
             else:
+                #Grab the widget and pull the image out of the flowchart node
                 touch.grab(self)
                 self.remove_widget(self.img)
                 self.app.root.add_widget(self.img)
-                #self.center = touch.pos
                 self.img.center = touch.pos
             return True
 
@@ -53,6 +57,7 @@ class DraggableImage(Magnet):
 
     def on_touch_move(self, touch, *args):
 
+        #If the node is grabbed, move the image center to the touch position
         if touch.grab_current == self:
             self.img.center = touch.pos
         return super(DraggableImage, self).on_touch_move(touch, *args)
@@ -81,7 +86,7 @@ class DraggableImage(Magnet):
                 self.cell.add_widget(self.node)
                 self.add_widget(self.img)
                 touch.ungrab(self)
-        self.node.update_connections()
+        Clock.schedule_once(self.node.update_connections)
         return super(DraggableImage, self).on_touch_up(touch, *args)
 
 class ConnectorForward(ToggleButton):
@@ -135,13 +140,20 @@ class ConnectorForward(ToggleButton):
 class ConnectorBack(ToggleButton):
     app=ObjectProperty(None)
     node=ObjectProperty(None)
+    grid=ObjectProperty(None)
     def __init__(self, **kwargs):
         
         super(ConnectorBack, self).__init__(**kwargs)
         self.background_down='src/img/drag_node_down_small.png'
         self.background_normal='src/img/drag_node_small.png'
         self.group='back'
-        self.bind(on_press=self.node.update_connections)
+        self.bind(on_press=self.make_connections)
+        
+    def make_connections(self, *args):
+        for node in self.grid.nodes:
+            if node.connector.state=='down':
+                node.connector.create_connections()
+                Logger.debug('FlowChart: Active Connector Detected')
 
 class FlowChartNode(BoxLayout):
     
@@ -178,7 +190,7 @@ class FlowChartNode(BoxLayout):
         
         con = ConnectorForward(grid=self.grid, node=self)
         Logger.debug('Flowchart: ConnectorNode: Connector Node initialized with grid %s' % (self.grid))
-        rec = ConnectorBack(app=self.app, node=self)
+        rec = ConnectorBack(app=self.app, node=self, grid=self.grid)
         self.connector = con
         self.receiver = rec
 
@@ -224,9 +236,9 @@ class FlowChartNode(BoxLayout):
     def update_connections(self, *args):
         i=0
         self.connector.clear_widgets()
+        Logger.debug('FlowChart: Connections Updated')
         for con in self.connections:
             self.connector.add_widget(self.connector.connections[i])
             self.connector.connections[i].front=self.connector.center
             self.connector.connections[i].back=con.receiver.center
-            Logger.debug('FlowChart: Connections Updated')
             i+=1
