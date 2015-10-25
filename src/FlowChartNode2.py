@@ -117,17 +117,18 @@ class ConnectorForward(ToggleButton):
                 
             for node in self.grid.nodes:
                 if node.receiver.state=='down':
-                    self.state='normal'
-                    node.receiver.state='normal'
-                    connector = Connector(line_color=self.connector_color)
-                    self.connections.append(connector)
-                    self.node.connections.append(node)
-                    self.matching_connection=node
-                    
-                    #TO-DO: Validate for duplicates
-                    self.grid.connections[0].append(self.node)
-                    self.grid.connections[1].append(node)
-                    Logger.debug('FlowChart: Matching Connector appended')
+                    if node != self.node:
+                        self.state='normal'
+                        node.receiver.state='normal'
+                        connector = Connector(line_color=self.connector_color)
+                        self.connections.append(connector)
+                        self.node.connections.append(node)
+                        self.matching_connection=node
+                        
+                        #TO-DO: Validate for duplicates
+                        self.grid.connections[0].append(self.node)
+                        self.grid.connections[1].append(node)
+                        Logger.debug('FlowChart: Matching Connector appended')
                     
             #Add the connections to the widget
             for connect in self.connections:
